@@ -78,3 +78,4 @@ mod1 <- glm(formula=oil$Yield_percent~
 
 tidy(mod1) %>%
   filter(p.value< 0.05)
+
