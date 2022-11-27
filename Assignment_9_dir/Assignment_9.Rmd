@@ -1,0 +1,100 @@
+---
+title: "Assignment_9"
+author: "Preston Lines"
+date: "2022-11-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(modelr)
+library(GGally)
+library(easystats)
+library(broom)
+```
+
+load the file
+```{r echo=TRUE, results='hide'}
+read_csv(file = "GradSchool_Admissions.csv")
+```
+
+save it as a dataframe
+```{r echo=TRUE, results='hide'}
+df <- read_csv(file = "GradSchool_Admissions.csv")
+```
+
+see some general correlations between the columns
+```{r echo=TRUE, results='hide'}
+df %>% 
+  select(admit,gre,gpa,rank) %>% 
+  ggpairs()
+```
+
+observe how the GRE scores and the gpa affect admission
+```{r echo=TRUE}
+df %>% 
+  ggplot(aes(x = gre,y = gpa)) +
+  facet_wrap(~admit) +
+  geom_point()
+```
+
+very interesting results, some students have very high GRE scores and GPA but were not admitted
+let's analyze the rank of their undergraduate studies
+```{r echo=TRUE, results='hide'}
+df %>% 
+  ggplot(aes(x = gre,fill = admit)) +
+  facet_grid(admit~rank) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+let's plot the exact same data but with GPA instead of GRE scores
+```{r echo=TRUE, results='hide'}
+df %>% 
+  ggplot(aes(x = gpa,fill = admit)) +
+  geom_density(alpha=0.5) +
+  facet_grid(admit~rank) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+plot everything we've learned into one plot, showing gre, gpa, rank, and admission
+```{r echo=TRUE, results='hide'}
+df %>% 
+  ggplot(mapping = aes(x = gre, y=gpa, color=rank))+
+  geom_point()+geom_smooth(aes(sd(FALSE)))
+```
+
+make a model of the rank of the undergraduate institution factoring in gre and gpa
+```{r echo=TRUE, results='hide'}
+mod1 <- glm(data = df,formula = rank ~ gre + gpa)
+```
+
+create a second model, this time showing admissions by gre and gpa
+```{r echo=TRUE, results='hide'}
+mod2 <- glm(data = df,formula = admit ~ gre + gpa)
+```
+
+create mod3 using stepAIC
+```{r echo=TRUE, results='hide'}
+fullmod <- glm(data = df,formula = admit ~ gre + gpa + rank)
+step <- MASS::stepAIC(fullmod, trace=0)
+mod3 <- glm(data = df,formula = step$formula)
+```
+
+make a prediction function
+```{r echo=TRUE, results='hide'}
+df %>%
+  gather_predictions(mod1,mod2,mod3) %>%
+  ggplot(aes(x = gpa, y = pred, color=model))+
+  geom_segment(aes(x = 0,y = 0,xend=4, yend=4),linetype=2,
+               color="black",alpha=.5)+
+  geom_smooth(method = "lm",se=FALSE)+
+  facet_wrap(~admit)
+```
+
+it's a bit off, but I tried my best :)
+
