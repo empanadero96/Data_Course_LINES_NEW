@@ -52,7 +52,7 @@ p1 <- df100m %>%
 
 p1
 
-#Save this 100m plot
+#Save this plot (100m_splits)
 ggsave(file = "100m_splits.png")
 
 # plot df400m
@@ -70,7 +70,7 @@ p2 <- df400m %>%
   
 p2
 
-#Save this 400m plot
+#Save this plot (400m_splits)
 ggsave(file = "400m_splits.png")
 
 
@@ -102,6 +102,40 @@ cor.test(flip400m$TOTAL, flip400m$`2nd200m`)
 cor.test(flip400m$TOTAL, flip400m$`Differential`)
 
 #See that 200-250m, 300-300m, 2nd200m, and Differential are significant; P-value less than 0.05
+
+# Do some plotting with our new findings
+# Plot the 20-30m splits compared to total
+
+plot2030m <- df100m %>% 
+  filter(splits == "TOTAL" | splits == "20-30") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot2030m)[2] <- "split"
+
+p3 <- ggplot(plot2030m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point()
+
+p3
+
+# Save this plot (20-30m_splits)
+ggsave(file = "20-30m_splits.png")
+
+# Plot the 60-7m splits compared to total
+plot6070m <- df100m %>% 
+  filter(splits == "TOTAL" | splits == "60-70") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot6070m)[2] <- "split"
+
+p4 <- ggplot(plot6070m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point()
+
+p4
+
+# Save this plot (60-70m_splits)
+ggsave(file = "60-70m_splits.png")
+
+
 
 
 
