@@ -211,7 +211,7 @@ plot400mdiffer <- df400m %>%
   filter(splits == "TOTAL" | splits == "Differential") %>% 
   pivot_wider(names_from = splits, values_from = times)
 
-colnames(plot400differ)[2] <- "split"
+colnames(plot400mdiffer)[2] <- "split"
 
 p9 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runners)) + 
   geom_point()+
@@ -221,7 +221,6 @@ p9
 
 #Save this plot(1st_2nd_diff)
 ggsave(file = "1st_2nd_diff.png")
-
 
 
 
