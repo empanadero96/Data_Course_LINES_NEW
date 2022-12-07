@@ -35,3 +35,4 @@ Plotted below are the 50m splits from the 2008 Olympic Trials Men's 400m Finals
 knitr::include_graphics("400m_splits.png")
 ```
 
+This is very telling, we see that the runners start out very fast, then slow down, speed up again, then gradually slow down. Let's make a model to document this bizarre occurance.
