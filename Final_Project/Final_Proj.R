@@ -103,7 +103,7 @@ cor.test(flip400m$TOTAL, flip400m$`Differential`)
 
 #See that 200-250m, 300-300m, 2nd200m, and Differential are significant; P-value less than 0.05
 
-# Do some plotting with our new findings
+# Do some plotting with our new findings in the 100 meter dash
 # Plot the 20-30m splits compared to total
 
 plot2030m <- df100m %>% 
@@ -113,14 +113,15 @@ plot2030m <- df100m %>%
 colnames(plot2030m)[2] <- "split"
 
 p3 <- ggplot(plot2030m, aes(x = TOTAL, y = split, col = runners)) + 
-  geom_point()
-
+  geom_point() +
+  labs(x = "TOTAL", y = "20-30m split")
+  
 p3
 
 # Save this plot (20-30m_splits)
 ggsave(file = "20-30m_splits.png")
 
-# Plot the 60-7m splits compared to total
+# Plot the 60-70m splits compared to total
 plot6070m <- df100m %>% 
   filter(splits == "TOTAL" | splits == "60-70") %>% 
   pivot_wider(names_from = splits, values_from = times)
@@ -128,13 +129,98 @@ plot6070m <- df100m %>%
 colnames(plot6070m)[2] <- "split"
 
 p4 <- ggplot(plot6070m, aes(x = TOTAL, y = split, col = runners)) + 
-  geom_point()
+  geom_point() +
+  labs(x = "TOTAL", y = "60-70m split")
 
 p4
 
 # Save this plot (60-70m_splits)
 ggsave(file = "60-70m_splits.png")
 
+#Compare the 20-30m split to the 60-70m split
+comp100msplits <- df100m %>% 
+  filter(splits == "60-70" | splits == "20-30") %>%
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(comp100msplits)[c(2:3)]<-c("early", "late")
+
+p5 <- ggplot(comp100msplits, aes(x = early, y=,late, color = runners))+ 
+  geom_point() +
+  labs(x = "20-30m split", y = "60-70m split")
+
+p5
+
+#Save this plot (comp100m_splits)
+ggsave(file = "comp100m_splits.png")
+
+# Do some plotting with our new findings in the 400 meter dash
+
+#200-250m, 300-350m, 2nd200m, and Differential
+
+#Plot the 200-250m data
+plot200250m <- df400m %>% 
+  filter(splits == "TOTAL" | splits == "200-250") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot200250m)[2] <- "split"
+
+p6 <- ggplot(plot200250m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point()+
+  labs(y = "200-250m split")
+
+#Save this plot(200-250m_splits)
+ggsave(file = "200-250m_splits.png")
+
+#Plot the 300-350m data
+plot300350m <- df400m %>% 
+  filter(splits == "TOTAL" | splits == "300-350") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot300350m)[2] <- "split"
+
+p7 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point()+
+  labs(y = "300-350m split")
+
+p7
+
+#Whoa! p7 is by FAR the the split with the greatest correlation
+#Definitely use this
+
+#Save this plot(300-350m_splits)
+ggsave(file = "300-350m_splits.png")
+
+#Plot the data for the 2nd 200m
+plot2nd200m <- df400m %>% 
+  filter(splits == "TOTAL" | splits == "2nd_200") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot2nd200m)[2] <- "split"
+
+p8 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point()+
+  labs(y = "2nd200m split")
+
+p8
+
+#Save this plot(2nd200m_split)
+ggsave(file = "2nd200m_split.png")
+
+#Plot the data for the Differential
+plot400mdiffer <- df400m %>% 
+  filter(splits == "TOTAL" | splits == "Differential") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot400differ)[2] <- "split"
+
+p9 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point()+
+  labs(y = "1st and 2nd 200m difference")
+
+p9
+
+#Save this plot(1st_2nd_diff)
+ggsave(file = "1st_2nd_diff.png")
 
 
 
