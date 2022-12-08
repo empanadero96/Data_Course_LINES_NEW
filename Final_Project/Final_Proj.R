@@ -11,7 +11,7 @@ data100m <- read_csv(file = "Olympic100mSplits.csv")
 
 # Tidy the data100m  data set, call it "df100m"
 df100m <- 
-  pivot_longer(data100m, 2:8, names_to = "runners", values_to = "times")
+  pivot_longer(data100m, 2:8, names_to = "runner", values_to = "times")
 
 colnames(df100m)[1] = "splits"
 
@@ -29,7 +29,7 @@ data400m <- read_csv(file = "Olympic400mSplits.csv")
 
 # Tidy the data400m data set, call it "df400m"
 df400m <- 
-  pivot_longer(data400m, 2:9, names_to = "runners", values_to = "times")
+  pivot_longer(data400m, 2:9, names_to = "runner", values_to = "times")
 
 colnames(df400m)[1] = "splits"
 
@@ -47,7 +47,7 @@ p1 <- df100m %>%
   filter(!grepl("Start-10", splits)) %>% 
   ggplot(mapping = aes(x = splits, y = times)) +
   geom_point() +
-  facet_wrap(~runners) +
+  facet_wrap(~runner) +
   theme(axis.text.x = element_text(angle = 90))
 
 p1
@@ -65,7 +65,7 @@ p2 <- df400m %>%
   filter(!grepl("2nd", splits)) %>% 
   ggplot(mapping = aes(x = splits, y = times)) +
   geom_point() +
-  facet_wrap(~runners) +
+  facet_wrap(~runner) +
   theme(axis.text.x = element_text(angle = 90))
   
 p2
@@ -112,7 +112,7 @@ plot2030m <- df100m %>%
 
 colnames(plot2030m)[2] <- "split"
 
-p3 <- ggplot(plot2030m, aes(x = TOTAL, y = split, col = runners)) + 
+p3 <- ggplot(plot2030m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point() +
   labs(x = "TOTAL", y = "20-30m split")
   
@@ -128,7 +128,7 @@ plot6070m <- df100m %>%
 
 colnames(plot6070m)[2] <- "split"
 
-p4 <- ggplot(plot6070m, aes(x = TOTAL, y = split, col = runners)) + 
+p4 <- ggplot(plot6070m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point() +
   labs(x = "TOTAL", y = "60-70m split")
 
@@ -144,7 +144,7 @@ comp100msplits <- df100m %>%
 
 colnames(comp100msplits)[c(2:3)]<-c("early", "late")
 
-p5 <- ggplot(comp100msplits, aes(x = early, y=,late, color = runners))+ 
+p5 <- ggplot(comp100msplits, aes(x = early, y=,late, color = runner))+ 
   geom_point() +
   labs(x = "20-30m split", y = "60-70m split")
 
@@ -164,7 +164,7 @@ plot200250m <- df400m %>%
 
 colnames(plot200250m)[2] <- "split"
 
-p6 <- ggplot(plot200250m, aes(x = TOTAL, y = split, col = runners)) + 
+p6 <- ggplot(plot200250m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point()+
   labs(y = "200-250m split")
 
@@ -180,7 +180,7 @@ plot300350m <- df400m %>%
 
 colnames(plot300350m)[2] <- "split"
 
-p7 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runners)) + 
+p7 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point(size = 4)+
   labs(y = "300-350m split")
 
@@ -199,7 +199,7 @@ plot2nd200m <- df400m %>%
 
 colnames(plot2nd200m)[2] <- "split"
 
-p8 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runners)) + 
+p8 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point()+
   labs(y = "2nd200m split")
 
@@ -215,7 +215,7 @@ plot400mdiffer <- df400m %>%
 
 colnames(plot400mdiffer)[2] <- "split"
 
-p9 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runners)) + 
+p9 <- ggplot(plot2nd200m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point()+
   labs(y = "1st and 2nd 200m difference")
 
@@ -223,4 +223,3 @@ p9
 
 #Save this plot(1st_2nd_diff)
 ggsave(file = "1st_2nd_diff.png")
-

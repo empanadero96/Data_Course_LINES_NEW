@@ -25,7 +25,7 @@ data100m <- read_csv(file = "Olympic100mSplits.csv")
 
 # Tidy the data100m  data set, call it "df100m"
 df100m <- 
-  pivot_longer(data100m, 2:8, names_to = "runners", values_to = "times")
+  pivot_longer(data100m, 2:8, names_to = "runner", values_to = "times")
 
 colnames(df100m)[1] = "splits"
 
@@ -43,7 +43,7 @@ data400m <- read_csv(file = "Olympic400mSplits.csv")
 
 # Tidy the data400m data set, call it "df400m"
 df400m <- 
-  pivot_longer(data400m, 2:9, names_to = "runners", values_to = "times")
+  pivot_longer(data400m, 2:9, names_to = "runner", values_to = "times")
 
 colnames(df400m)[1] = "splits"
 
@@ -66,7 +66,7 @@ colnames(plot300350m)[2] <- "split"
 
 I became interested in the human body's ability to sprint/run over certain distances after learning that in the 100m sprint, the shortest event in track and field, the sprinters are already slowing down towards the end. This was intriguing to me, and I wanted to learn more. 
 
-To begin this project, I took data from https://speedendurance.com/ which has data from many events in track and field, including the splits for each runner in different events. In track and field, a "split" is a term used to define a runners pace over different lengths of the race; how fast they complete a certain section of the race. 
+To begin this project, I took data from https://speedendurance.com/ which has data from many events in track and field, including the splits for each runner in different events. In track and field, a "split" is a term used to define a runner's pace over different lengths of the race; how fast they complete a certain section of the race. 
 
 #### 100 meter dash
 
@@ -93,11 +93,11 @@ This is very telling, we see that the runners start out very fast, then slow dow
 Let's take a look at the 300-350m split of the 2008 Olympic Trials Men's 400m finals
 
 ```{r, echo = FALSE, out.width = "700px"}
-interactive1 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runners)) + 
+interactive300350 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runner)) + 
   geom_point(size = 4)+
   labs(y = "300-350m split")
 
-ggplotly(interactive1)
+ggplotly(interactive300350)
 ```
 
 
