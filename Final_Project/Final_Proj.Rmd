@@ -9,6 +9,59 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r include=FALSE}
+library(tidyverse)
+library(patchwork)
+library(janitor)
+library(easystats)
+library(modelr)
+library(broom)
+library(ggplot2)
+library(plotly)
+
+
+# Load in the 100m splits data set
+data100m <- read_csv(file = "Olympic100mSplits.csv")
+
+# Tidy the data100m  data set, call it "df100m"
+df100m <- 
+  pivot_longer(data100m, 2:8, names_to = "runners", values_to = "times")
+
+colnames(df100m)[1] = "splits"
+
+df100m$splits<-gsub("m","",as.character(df100m$splits))
+
+# Flip the data100m data set, call it "flip100m"
+names100<-c("RT", "Start-10m", "10-20m", "20-30m", "30-40m", "40-50m", "50-60m", "60-70m", "70-80m", "80-90m", "90-100m", "TOTAL")
+
+flip100m <- setNames(data.frame(t(data100m[,-1])), data100m[,1])
+
+colnames(flip100m) <- names100
+
+# Load in the 400m splits data set
+data400m <- read_csv(file = "Olympic400mSplits.csv")
+
+# Tidy the data400m data set, call it "df400m"
+df400m <- 
+  pivot_longer(data400m, 2:9, names_to = "runners", values_to = "times")
+
+colnames(df400m)[1] = "splits"
+
+#Flip the data400m data set, call it "flip400m"
+names400 <- c("Start-100m", "100-150m", "150-200m", "200-250m", "250-300m", "300-350m", "350-400m", "1st200m", "2nd200m", "Differential", "TOTAL")
+
+flip400m <- setNames(data.frame(t(data400m[,-1])), data400m[,1])
+
+colnames(flip400m) <- names400
+
+plot300350m <- df400m %>% 
+  filter(splits == "TOTAL" | splits == "300-350") %>% 
+  pivot_wider(names_from = splits, values_from = times)
+
+colnames(plot300350m)[2] <- "split"
+
+```
+
 ### Introduction and Background
 
 I became interested in the human body's ability to sprint/run over certain distances after learning that in the 100m sprint, the shortest event in track and field, the sprinters are already slowing down towards the end. This was intriguing to me, and I wanted to learn more. 
@@ -35,4 +88,18 @@ Plotted below are the 50m splits from the 2008 Olympic Trials Men's 400m Finals
 knitr::include_graphics("400m_splits.png")
 ```
 
-This is very telling, we see that the runners start out very fast, then slow down, speed up again, then gradually slow down. Let's make a model to document this bizarre occurance.
+This is very telling, we see that the runners start out very fast, then slow down, speed up again, then gradually slow down. Let's make a model to document this bizarre occurrence.
+
+Let's take a look at the 300-350m split of the 2008 Olympic Trials Men's 400m finals
+
+```{r, echo = FALSE, out.width = "700px"}
+interactive1 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runners)) + 
+  geom_point(size = 4)+
+  labs(y = "300-350m split")
+
+ggplotly(interactive1)
+```
+
+
+
+

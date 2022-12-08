@@ -168,6 +168,8 @@ p6 <- ggplot(plot200250m, aes(x = TOTAL, y = split, col = runners)) +
   geom_point()+
   labs(y = "200-250m split")
 
+p6
+
 #Save this plot(200-250m_splits)
 ggsave(file = "200-250m_splits.png")
 
@@ -179,7 +181,7 @@ plot300350m <- df400m %>%
 colnames(plot300350m)[2] <- "split"
 
 p7 <- ggplot(plot300350m, aes(x = TOTAL, y = split, col = runners)) + 
-  geom_point()+
+  geom_point(size = 4)+
   labs(y = "300-350m split")
 
 p7
@@ -221,6 +223,4 @@ p9
 
 #Save this plot(1st_2nd_diff)
 ggsave(file = "1st_2nd_diff.png")
-
-
 
