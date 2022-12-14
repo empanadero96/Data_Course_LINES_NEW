@@ -1,5 +1,7 @@
 library(tidyverse)
 
+# This is a redo of Exam 1
+
 #Task 1, read the cleaned_covid_data.csv file into an R data frame. 
 read_csv(file ="cleaned_covid_data.csv")
 
